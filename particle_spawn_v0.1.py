@@ -12,7 +12,7 @@
 ###################################
 
 #####################################################################################################################
-# Currently works with:  hdf/intel/5-1.8.9   netcdf/intel/4.2.1   python/anaconda/2.2.0 OR python/anaconda/p3-2.3.0 #
+# Currently works with:  hdf/intel/5-1.8.9   netcdf/intel/4.2.1   python/anaconda/2.2.0	OR python/anaconda/p3-2.3.0 #
 #####################################################################################################################
 
 #########################################################################
@@ -28,13 +28,14 @@
    # development and wide spread use                #   
     ################################################ 
 
-import csv
+import os
 from netCDF4 import Dataset
 import numpy as np
 
 
 # This script generate a csv file with particle locations and depths which spawn particles into model output data that already exists (eg. post processing for maximum gain of already existing data). 
 # Current use (02/09/2015) is as age an tracer experiment for the investigation of denitrification on the European Contintenal Shelf.  
+
 
 
 ##########################
@@ -49,13 +50,13 @@ model_output = "mod_in"
 # Change p_box to determine how many particles will be released at each location
 # Number of particles per grid square
 # Value must be greater than 1
-p_box = p_in
-          
+p_box = p_in 
+
 # Specify date and time according to the start time of inputfile: lag_getm.inp
 date = "date_time"
 
 # Name of output spawn csv particle file. This is required as an 'input file' for the particle spawning script, and is required to be in the correct format
-out_file = "spawn.csv"
+out_file = "spawn_file"
 
 # %d #use for digits, %n #use for floating point
 # "spawn%d" % i
@@ -67,7 +68,7 @@ boxes = [
         # Each line describes one rectilinear area (box) for particle spawning
         # Example: [[lat1,lat2],[lon1,lon2]],
         # Example: [[56,57.0],[-9,-8.4]],
-
+         
           # # # # # # # # # # # # # # # # # # # # # # # #
         # ONLY USE ONE BOX AT A TIME OR IT WILL BREAK  #
         # THIS WILL SAVE ON COMPUTATIONAL TIME        #
@@ -132,8 +133,9 @@ def list_boxlocations(lat_range,lon_range):
     #this bit magically expands to all combinations using python voodoo
     for x in a:
         r=[ i + [y] for y in x for i in r ]
-
+    
     return r
+
 
 def brute_force_location_index(latvar,lonvar,lat0,lon0):
     '''This goes through all latvar and lonvar values and picks out the shortest distance from lat0 and lon0 and looks up the nearest location in model grid coordinates'''
@@ -163,6 +165,7 @@ def brute_force_location_index(latvar,lonvar,lat0,lon0):
                 ix_min = ix
                 dist_sq_min = dist_sq
     return iy_min, ix_min
+
 
 def createspawnlist_singlelocation(nparticles, latitude, longitude, date, model_output):
     ''' creates a list of particle spawn points over depth range, for a single grid square and time '''
@@ -196,7 +199,7 @@ def createspawnlist_singlelocation(nparticles, latitude, longitude, date, model_
         print(depth)
         p_box_count = p_box_count + nparticles
         return list_of_lists
-    else:
+    else: 
         return
 
 
@@ -204,6 +207,7 @@ master_list=[]
 
 # for each user-defined box...
 for box in boxes:
+    
     # Munge the data into the format required by def list_boxlocations(lon_range,lat_range)
     latrange = box[0]
     lonrange = box[1]
@@ -236,18 +240,9 @@ master_list3=[element.strip('[').strip(']').strip(' [') for element in master_li
 
 
 ## Writes list_of_lists to file. 
-with open(out_file,"w") as f:
+with open("out_file",'w') as f:
     f.write(str(len(master_list3)))
     f.write('\n')
     for line in master_list3:
         f.write(line)
         f.write('\n')
-    f.close()
-
-
-
-
-
-
-
-

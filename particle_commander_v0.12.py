@@ -86,16 +86,16 @@ with open('lag_setup', 'w') as setup:                                        # #
                                #        BOX LOCATIONS BELOW       #       
                                 # .............................. #
 
-               # 0 #        # 1 #       # 2 #       # 3 #      # 4 #
-latitude =   '48, 49',    '50,51',    '55,56',    '57,58',    '61,62'
-longitude =  '-10, -8',   '-11,-10',  '-10,-8',   '-10,-8',   '-2,2' 
+               # 0 #        # 1 #       # 2 #       # 3 #      # 4 #    # 5 #
+latitude =   '48, 49',    '50,51',    '55,56',    '57,58',    '61,62',   '48, 62' 
+longitude =  '-10, -8',   '-11,-10',  '-10,-8',   '-10,-8',   '-2,2',   '-12, 0'
 
 model_name_0 = 'celtic_south'      # 0 #
 model_name_1 = 'celtic_north'      # 1 # 
 model_name_2 = 'IRL_north'         # 2 # 
 model_name_3 = 'SCOT_west'         # 3 #
 model_name_4 = 'Scot_north_east'   # 4 #
-#model_name_x = 'celtic_10_particles_3_fmt'
+model_name_5 = 'whole_shelf'       # 5 #
 
  
 # The amount of rectiangular box spawn locations must equal #
@@ -136,18 +136,17 @@ model_name_4 = 'Scot_north_east'   # 4 #
 with open('setup_spawn', 'r') as spawny:
     read0 = spawny.read()
     write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_0))
-    write0 = read0.replace('lon_box', str(longitude[0]))
-    write0 = write0.replace('lat_box', str(latitude[0]))
+    writeA = write0.replace('lon_box', str(longitude[0]))
+    writeB = writeA.replace('lat_box', str(latitude[0]))
 with open ('setup_spawn_' + str(model_name_0), 'w') as spa:
-    spa.write(write0)
+    spa.write(writeB)
 
 with open('lag_setup', 'r') as laggy:
     with open('lag_' + str(model_name_0), 'w') as spa:
         read0 = laggy.read()
         write0 = read0.replace('traj_id', str(model_name_0))
-        spa.write(write0)
-        write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_0))
-        spa.write(write0)
+        write1 = write0.replace('spawn_file', 'spawn_' + str(model_name_0))
+        spa.write(write1)
 
 with open('run_' + str(model_name_0), 'w') as spa:
     spa.write('/gpfs/home/zgv09gsu/particle/version1.8x/bin/lagrange' ' ' 'lag_' + str(model_name_0) + ' ' '>/gpfs/home/zgv09gsu/particle/version1.8x/modelsetups/matt_setup/inputfiles/Particle_Tracking_Working/Errors/err_lagrange.msg')
@@ -159,18 +158,17 @@ with open('run_' + str(model_name_0), 'w') as spa:
 with open('setup_spawn', 'r') as spawny:
     read0 = spawny.read()
     write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_2))
-    write0 = read0.replace('lon_box', str(longitude[2]))
-    write0 = write0.replace('lat_box', str(latitude[2]))
+    writeA = write0.replace('lon_box', str(longitude[2]))
+    writeB = writeA.replace('lat_box', str(latitude[2]))
 with open ('setup_spawn_' + str(model_name_2), 'w') as spa:
-    spa.write(write0)
+    spa.write(writeB)
 
 with open('lag_setup', 'r') as laggy:
     with open('lag_' + str(model_name_2), 'w') as spa:
         read0 = laggy.read()
         write0 = read0.replace('traj_id', str(model_name_2))
-        spa.write(write0)
-        write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_2))
-        spa.write(write0)
+        write1 = write0.replace('spawn_file', 'spawn_' + str(model_name_2))
+        spa.write(write1)
 
 with open('run_' + str(model_name_2), 'w') as spa:
     spa.write('../../../../bin/lagrange' ' ' 'lag_' + str(model_name_2) + ' ' '> err_lagrange.msg')
@@ -182,18 +180,17 @@ with open('run_' + str(model_name_2), 'w') as spa:
 with open('setup_spawn', 'r') as spawny:
     read0 = spawny.read()
     write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_3))
-    write0 = read0.replace('lon_box', str(longitude[3]))
-    write0 = write0.replace('lat_box', str(latitude[3]))
+    writeA = write0.replace('lon_box', str(longitude[3]))
+    writeB = writeA.replace('lat_box', str(latitude[3]))
 with open ('setup_spawn_' + str(model_name_3), 'w') as spa:
-    spa.write(write0)
+    spa.write(writeB)
 
 with open('lag_setup', 'r') as laggy:
     with open('lag_' + str(model_name_3), 'w') as spa:
         read0 = laggy.read()
         write0 = read0.replace('traj_id', str(model_name_3))
-        spa.write(write0)
-        write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_3))
-        spa.write(write0)
+        write1 = write0.replace('spawn_file', 'spawn_' + str(model_name_3))
+        spa.write(write1)
 
 with open('run_' + str(model_name_3), 'w') as spa:
     spa.write('../../../../bin/lagrange' ' ' 'lag_' + str(model_name_3) + ' ' '> err_lagrange.msg')
@@ -205,18 +202,17 @@ with open('run_' + str(model_name_3), 'w') as spa:
 with open('setup_spawn', 'r') as spawny:
     read0 = spawny.read()
     write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_4))
-    write0 = read0.replace('lon_box', str(longitude[4]))
-    write0 = write0.replace('lat_box', str(latitude[4]))
+    writeA = write0.replace('lon_box', str(longitude[4]))
+    writeB = writeA.replace('lat_box', str(latitude[4]))
 with open ('setup_spawn_' + str(model_name_4), 'w') as spa:
-    spa.write(write0)
+    spa.write(writeB)
 
 with open('lag_setup', 'r') as laggy:
     with open('lag_' + str(model_name_4), 'w') as spa:
         read0 = laggy.read()
         write0 = read0.replace('traj_id', str(model_name_4))
-        spa.write(write0)
-        write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_4))
-        spa.write(write0)
+        write1 = write0.replace('spawn_file', 'spawn_' + str(model_name_4))
+        spa.write(write1)
 
 with open('run_' + str(model_name_4), 'w') as spa:
     spa.write('../../../../bin/lagrange' ' ' 'lag_' + str(model_name_4) + ' ' '> err_lagrange.msg')
@@ -225,24 +221,23 @@ with open('run_' + str(model_name_4), 'w') as spa:
 #   LOCATION 5   #
 # <> <> <> <> <> #
 
-#with open('setup_spawn', 'r') as spawny:
-#    read0 = spawny.read()
-#    write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_5))
-#    write0 = read0.replace('lon_box', str(longitude[5]))
-#    write0 = write0.replace('lat_box', str(latitude[5]))
-#with open ('setup_spawn_' + str(model_name_5), 'w') as spa:
-#    spa.write(write0)
+with open('setup_spawn', 'r') as spawny:
+    read0 = spawny.read()
+    write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_5))
+    writeA = write0.replace('lon_box', str(longitude[5]))
+    writeB = writeA.replace('lat_box', str(latitude[5]))
+with open ('setup_spawn_' + str(model_name_5), 'w') as spa:
+    spa.write(writeB)
 
-#with open('lag_setup', 'r') as laggy:
-#    with open('lag_' + str(model_name_5), 'w') as spa:
-#        read0 = laggy.read()
-#        write0 = read0.replace('traj_id', str(model_name_5))
-#        spa.write(write0)
-#        write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_5))
-#        spa.write(write0)
+with open('lag_setup', 'r') as laggy:
+    with open('lag_' + str(model_name_5), 'w') as spa:
+        read0 = laggy.read()
+        write0 = read0.replace('traj_id', str(model_name_5))
+        write1 = write0.replace('spawn_file', 'spawn_' + str(model_name_5))
+        spa.write(write1)
 
-#with open('run_' + str(model_name_5), 'w') as spa:
-#    spa.write('../../../../bin/lagrange' ' ' 'lag_' + str(model_name_5) + ' ' '> err_lagrange.msg')
+with open('run_' + str(model_name_5), 'w') as spa:
+    spa.write('../../../../bin/lagrange' ' ' 'lag_' + str(model_name_5) + ' ' '> err_lagrange.msg')
 
 
 ################
@@ -261,9 +256,9 @@ with open('run_' + str(model_name_4), 'w') as spa:
 #    read0 = laggy.read()
 #    write0 = read0.replace('spawn_file', 'spawn_' + str(model_name_X))   #Replace X with box_spawn_number 
 #    write0 = read0.replace('run_name', str(model_name_x))
-#    write0 = read0.replace('traj_id', str(model_name_x))
+#    write1 = write0.replace('traj_id', str(model_name_x))
 #with open('lag_' + str(model_name_X), 'w') as spa:
-#    spa.write(write0)
+#    spa.write(write1)
 
 #with open('run_' + str(model_name_X), 'w') as spa:
 #    spa.write('../../../../bin/lagrange' 'lag_' ' ' + str(model_name_X) + ' ' '> err_lagrange.msg')
