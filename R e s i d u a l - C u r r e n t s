@@ -1,0 +1,50 @@
+#!/usr/bin/env python
+
+                                  ##                               ##
+                                ## R e s i d u a l - C u r r e n t s ##
+                                  ##                               ##
+
+                                            # V e r s i o n #
+                                             #     0.01    #
+
+
+import matplotlib
+import numpy as np
+from netCDF4 import Dataset
+import os
+import matplotlib.pyplot as plt
+from mpl_toolkits.basemap import Basemap
+
+model_input_file = 'nwes-2d-2001001.nc'
+
+# Specify NETCDF dir
+input_directory  = '../../../../Create_links/'
+
+particle_data = Dataset("north_west_european_shelf.2d.nc",'r')
+#particle_data = Dataset("test2.nc",'r')
+lat = particle_data.variables['latc'][:]
+lon = particle_data.variables['lonc'][:]
+print (lat)
+print ('lon', lon)
+time = particle_data.variables['time'][:]
+timelen = len(time)
+print ('time')
+
+u = np.squeeze(particle_data.variables['u'][:])
+v = np.squeeze(particle_data.variables['v'][:])
+print ('uv done')
+[NT,NY,NX]=u.shape
+res_u = np.ma.zeros([NY,NX])
+res_v = np.ma.zeros([NY,NX])
+print('Length V:', len(v))
+print('Length u:', len(u))
+
+for x in range(len(lat)):
+    for y in range(len(lon)):
+        res_v[y,x] = np.ma.mean(v[0:28*24,x,y])
+        print(y,x,res_v[y,x])
+
+for x in range(len(lat)):
+    for y in range(len(lon)):
+        res_u[y,x] = np.ma.mean(u[0:28*24,x,y])
+        print(y,x,res_u[y,x])
