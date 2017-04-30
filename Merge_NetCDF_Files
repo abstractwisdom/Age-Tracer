@@ -1,0 +1,106 @@
+#!/bin/env python3
+import matplotlib.pyplot as plt
+import numpy as np
+from netCDF4 import Dataset
+import argparse
+from mpl_toolkits.basemap import Basemap
+import datetime
+import os
+
+### Clears file which will detail missing files
+os.system("rm -f Missing_Data")
+
+
+parser = argparse.ArgumentParser()
+
+parser.add_argument('-d', '--dataset', required=True, help='NETCDF Datafile')
+parser.add_argument('-r', '--datarange', required=True, help='NETCDF Datafile')
+
+args = parser.parse_args()
+
+netdata = args.dataset
+datarange = args.datarange
+datarange = int(datarange)
+
+nps = np.zeros(shape=(1))
+
+date_string = datetime.datetime.now().strftime("%d-%m-%Y-%H:%M")
+
+def create_net(total_particles, time_d, jpos_c, ipos_c, wfact_c):
+    #print("Ipos_C", ipos_c)
+    dataset_new = Dataset(date_string + '.nc', 'w')
+#    print("Dataset: ", dataset_new)
+    print("Total particles: ", total_particles)
+    nps_c = dataset_new.createDimension('nps', total_particles)
+    time_c = dataset_new.createDimension('time', len(time_d))
+    time = dataset_new.createVariable('time', np.float64, ('time'))
+    time[:] = time_d
+    ipos = dataset_new.createVariable('ipos', np.float64, ('time','nps'))
+    ipos[:] = ipos_c
+    jpos = dataset_new.createVariable('jpos', np.float64, ('time', 'nps'))
+    jpos[:] = jpos_c
+    wfact= dataset_new.createVariable('wfact', np.float64, ('time', 'nps'))
+    wfact[:] = wfact_c
+
+
+
+    dataset_new.close()
+
+total_particles = 0
+created_file = 1
+for i in np.arange(1,datarange):
+    try:
+        netdata = args.dataset
+        if netdata is not None:
+            particle_data = Dataset(netdata + str(i) + '.nc','r')
+
+            nps_o = particle_data.dimensions['nps']
+            nps_len = len(nps_o)
+
+            jpos_o = particle_data.variables['jpos'][:]
+            ipos_o = particle_data.variables['ipos'][:]
+            jpos = dataset_new.createVariable('jpos', np.float64, ('time', 'nps'))
+            jpos[:] = jpos_c
+            wfact= dataset_new.createVariable('wfact', np.float64, ('time', 'nps'))
+            wfact[:] = wfact_c
+            dataset_new.close()
+
+total_particles = 0
+created_file = 1
+for i in np.arange(1,datarange):
+    try:
+        netdata = args.dataset
+        if netdata is not None:
+            particle_data = Dataset(netdata + str(i) + '.nc','r')
+
+            nps_o = particle_data.dimensions['nps']
+            nps_len = len(nps_o)
+
+            jpos_o = particle_data.variables['jpos'][:]
+            ipos_o = particle_data.variables['ipos'][:]
+            wfact_o = particle_data.variables['wfact'][:]
+      #      print("Files: ", created_file) 
+            if created_file == 1:
+                time_d = particle_data.variables['time'][:]
+
+                jpos_c, ipos_c, wfact_c = jpos_o.copy(), ipos_o.copy(), wfact_o.copy()
+            else:
+                jpos_c = np.hstack([jpos_c, jpos_o])
+                ipos_c = np.hstack([ipos_c, ipos_o])
+                wfact_c = np.hstack([wfact_c, wfact_o])
+            total_particles += nps_len
+            created_file += 1
+       #     print("Whats this", ipos_c, ipos_c.shape)
+            particle_data.close()
+
+    except Exception as e:
+        print("Missing file:    [[[  " + netdata + str(i) + ".nc  ]]]")
+#        print(e)
+
+      # Let's open a new file and save all the datasets which are missing
+        with open("Missing_Data", 'a') as error:
+            error.write("Missing Dataset: " + netdata + str(i) + '\n')
+        pass
+
+#print("creatingnew")
+create_net(total_particles, time_d, jpos_c, ipos_c, wfact_c)
